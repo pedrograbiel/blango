@@ -1,3 +1,4 @@
+import logging
 from django import template
 from django.contrib.auth import get_user_model
 from django.utils.html import escape
@@ -57,3 +58,12 @@ def row(extra_classes=""):
 def recent_posts(post):
     posts = Post.objects.exclude(pk=post.pk)[:5]
     return {"title": "Recent Posts", "posts": posts}
+    logger.debug("Loaded %d recent posts for post %d", len(posts), post.pk)
+{% cache 3600 recent_posts post %}
+
+     
+     
+
+
+@register.logger
+logger = logging.getLogger(__name__)
